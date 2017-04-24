@@ -1,0 +1,17 @@
+.editor-main-wrapper {
+width: 100%;
+position: relative;
+}
+.editor-main-wrapper:hover > .editor-main-button{display:block !important;}
+.editor-main-button {
+display:none;
+position: absolute;
+left: 50%;
+top: 50%;
+margin-left:-50px;
+margin-top: -10.5px;
+z-index: 99;
+}
+.editor-main-button > a{
+width:100px;
+}
