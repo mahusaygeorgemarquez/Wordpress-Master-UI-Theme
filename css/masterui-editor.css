@@ -6,11 +6,12 @@ position: relative;
 .editor-main-button {
 display:none;
 position: absolute;
-left: 50%;
-top: 50%;
-margin-left:-50px;
-margin-top: -10.5px;
+left: 0px;
+top: 0px;
 z-index: 99;
+width: 100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.5);
 }
 .editor-main-button > a{
 width:100px;

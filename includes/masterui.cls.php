@@ -5,7 +5,7 @@ class MasterUI{
 	public function __construct(){
 		$this->mui = new stdclass;
 		$this->mui->views = '';
-		
+		$this->mui->sidebarid = '';
 		if(
 			!file_exists(get_parent_theme_file_path( '/includes/admin/editor.wrapper.php' ))||
 			!file_exists(get_parent_theme_file_path( '/includes/admin/editor.wrapper.php' ))
@@ -14,7 +14,6 @@ class MasterUI{
 		}
 		
 		add_action( 'wp_enqueue_scripts', array($this, 'enqueueDefaultScriptStyle') );
-		
 		if($this->canEdit()){
 			add_action( 'wp_footer', array($this,'getEditorModal') );
 			add_action( 'wp_ajax_masteruieditor', array($this,'ajax_masteruieditor') );
@@ -30,26 +29,50 @@ class MasterUI{
 		}
 	}
 	
-	public function headerPage($content=''){
+	public function theTitle(){
+		$this->mui->views = 'title.php';
+		$this->getEditorWrapper();
+	}
+	
+	public function theTimeLink(){
+		$this->mui->views = 'time-link.php';
+		$this->getEditorWrapper();
+	}
+	
+	public function theContent(){
+		$this->mui->views = 'content.php';
+		$this->getEditorWrapper();
+	}
+	
+	public function theExcerpt(){
+		$this->mui->views = 'excerpt.php';
+		$this->getEditorWrapper();
+	}
+	
+	public function theEditLink(){
+		
+	}
+	
+	public function headerPage(){
 		$this->mui->views = 'header/header-default.php';
 		$this->getEditorWrapper();
 	}
 	
-	public function sidebarPage($content=''){
-		
+	public function contentPage($type='blog'){
+		$this->mui->views = $type.'/'.$type.'-default.php';
+		//$this->getEditorWrapper();
+		$this->getContent($this->mui->views);
 	}
 	
-	public function footerPage($content=''){
-		$this->mui->views = 'footer/footer-default.php';
+	public function sidebarPage($id){
+		$this->mui->sidebarid = $id;
+		$this->mui->views = 'sidebar/sidebar-default.php';
 		$this->getEditorWrapper();
 	}
 	
-	public function contentPage($content=''){
-		
-	}
-	
-	public function contentPost($cntent=''){
-		
+	public function footerPage(){
+		$this->mui->views = 'footer/footer-default.php';
+		$this->getEditorWrapper();
 	}
 	
 	public function getEditorModal(){

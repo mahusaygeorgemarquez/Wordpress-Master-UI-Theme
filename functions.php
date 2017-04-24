@@ -18,6 +18,51 @@ function masterui_footer(){
 	$masterui->footerPage();
 }
 
+function masterui_content($type='blog'){
+	global $masterui;
+	$masterui->contentPage($type);
+}
+
+if ( ! function_exists( 'masterui_edit_link' ) ) :
+function masterui_edit_link() {
+
+	$link = edit_post_link(
+		sprintf(
+			/* translators: %s: Name of current post */
+			__( 'Edit<span class="screen-reader-text"> "%s"</span>', 'masterui' ),
+			get_the_title()
+		),
+		'<span class="edit-link">',
+		'</span>'
+	);
+
+	return $link;
+}
+endif;
+
+if ( ! function_exists( 'masterui_time_link' ) ) :
+function masterui_time_link() {
+	$time_string = '<time class="entry-date published updated" datetime="%1$s">%2$s</time>';
+	if ( get_the_time( 'U' ) !== get_the_modified_time( 'U' ) ) {
+		$time_string = '<time class="entry-date published" datetime="%1$s">%2$s</time><time class="updated" datetime="%3$s">%4$s</time>';
+	}
+
+	$time_string = sprintf( $time_string,
+		get_the_date( DATE_W3C ),
+		get_the_date(),
+		get_the_modified_date( DATE_W3C ),
+		get_the_modified_date()
+	);
+
+	// Wrap the time string in a link, and preface it with 'Posted on'.
+	return sprintf(
+		/* translators: %s: post date */
+		__( '<span class="screen-reader-text">Posted on</span> %s', 'twentyseventeen' ),
+		'<a href="' . esc_url( get_permalink() ) . '" rel="bookmark">' . $time_string . '</a>'
+	);
+}
+endif;
+
 function masterui_setup() {
 	load_theme_textdomain( 'masterui' );
 
@@ -126,4 +171,36 @@ function masterui_setup() {
 }
 add_action( 'after_setup_theme', 'masterui_setup' );
 
+function masterui_widgets_init() {
+	register_sidebar( array(
+		'name'          => __( 'Sidebar', 'masterui' ),
+		'id'            => 'sidebar-1',
+		'description'   => __( 'Add widgets here to appear in your sidebar.', 'masterui' ),
+		'before_widget' => '<section id="%1$s" class="widget %2$s">',
+		'after_widget'  => '</section>',
+		'before_title'  => '<h2 class="widget-title">',
+		'after_title'   => '</h2>',
+	) );
+
+	register_sidebar( array(
+		'name'          => __( 'Footer 1', 'masterui' ),
+		'id'            => 'sidebar-2',
+		'description'   => __( 'Add widgets here to appear in your footer.', 'masterui' ),
+		'before_widget' => '<section id="%1$s" class="widget %2$s">',
+		'after_widget'  => '</section>',
+		'before_title'  => '<h2 class="widget-title">',
+		'after_title'   => '</h2>',
+	) );
+
+	register_sidebar( array(
+		'name'          => __( 'Footer 2', 'masterui' ),
+		'id'            => 'sidebar-3',
+		'description'   => __( 'Add widgets here to appear in your footer.', 'masterui' ),
+		'before_widget' => '<section id="%1$s" class="widget %2$s">',
+		'after_widget'  => '</section>',
+		'before_title'  => '<h2 class="widget-title">',
+		'after_title'   => '</h2>',
+	) );
+}
+add_action( 'widgets_init', 'masterui_widgets_init' );
 require get_parent_theme_file_path( '/includes/masterui.cls.php' );
